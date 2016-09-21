@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">RMSHelper</string>
+    <string name="sn_UPC">UPC:</string>
+    <string name="sn_EnterUPC">Enter UPC</string>
+    <string name="sn_LastSold">LAst Sold:</string>
+    <string name="sn_Description">Description:</string>
+    <string name="sn_ExtendedDescription">Extendeded Description:</string>
+    <string name="sn_D1">D1:</string>
+    <string name="sn_D2">D2:</string>
+    <string name="sn_D3">D3:</string>
+    <string name="sn_RetailPrice">Retail Price:  </string>
+    <string name="sn_SalePrice">Sale Price:   </string>
+    <string name="sn_CostPrice">Cost Price:   </string>
+    <string name="sn_7Days">7</string>
+    <string name="sn_15Days">15</string>
+    <string name="sn_30Days">30</string>
+    <string name="sn_Deptartment">Dept:</string>
+    <string name="sn_Supplier">Supp:</string>
+    <string name="sn_SS">SS:</string>
+    <string name="sn_SE">SE:</string>
+    <string name="sn_Suppliers">Suppliers:</string>
+    <string name="sn_MPQ">MPQ:</string>
+    <string name="sn_Cost">COST:</string>
+    <string name="sn_Copy">C</string>
+    <string name="sn_Print">P</string>
+    <string name="sn_PO">PO</string>
+    <string name="sn_Select">SELECT</string>
+    <string name="sn_Exit">EXIT</string>
 </resources>
