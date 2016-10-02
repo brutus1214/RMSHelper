@@ -25,14 +25,17 @@
             android:id="@+id/etUPC"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
             android:layout_weight="4"
             android:background="@drawable/edittextstyle"
-            android:digits="true"
+            android:digits="0123456789"
             android:ellipsize="start"
-            android:enabled="false"
             android:hint="@string/sn_EnterUPC"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true" />
+            android:inputType="number"
+            android:selectAllOnFocus="true"
+            android:enabled="true"
+            android:cursorVisible="true"
+            />
 
         <TextView
             android:id="@+id/tvLastSold_"

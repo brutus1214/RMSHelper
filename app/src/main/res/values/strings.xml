@@ -2,7 +2,7 @@
     <string name="app_name">RMSHelper</string>
     <string name="sn_UPC">UPC:</string>
     <string name="sn_EnterUPC">Enter UPC</string>
-    <string name="sn_LastSold">LAst Sold:</string>
+    <string name="sn_LastSold">Last Sold:</string>
     <string name="sn_Description">Description:</string>
     <string name="sn_ExtendedDescription">Extendeded Description:</string>
     <string name="sn_D1">D1:</string>
