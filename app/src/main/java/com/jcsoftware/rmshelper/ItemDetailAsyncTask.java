@@ -72,9 +72,9 @@ class ItemDetailAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
                 itemdetail.setSubDescription2(reset.getString("subdescription2"));
                 itemdetail.setSubDescription3(reset.getString("subdescription3"));
                 itemdetail.setExtendedDescription(reset.getString("extendeddescription"));
-                itemdetail.setPrice(reset.getInt("price"));
-                itemdetail.setSalePrice(reset.getInt("saleprice"));
-                itemdetail.setCost(reset.getInt("cost"));
+                itemdetail.setPrice(Double.parseDouble(reset.getString("price")));
+                itemdetail.setSalePrice(Double.parseDouble(reset.getString("saleprice")));
+                itemdetail.setCost(Double.parseDouble(reset.getString("cost")));
                 itemdetail.setLastSold(reset.getDate("lastsold"));
                 //itemdetail.setDept(reset.getString("dept"));
                 //itemdetail.setSaleStart(reset.getDate("salestart"));
