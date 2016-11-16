@@ -1,7 +1,9 @@
 package com.jcsoftware.rmshelper;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.icu.text.DecimalFormat;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    final Context context = this;
     ItemDetail itemdetail;
     LoginData ld = new LoginData();
 
@@ -101,32 +104,65 @@ public class MainActivity extends AppCompatActivity {
 
     public void ReturnItemDetailSet(ItemDetail id){
 
-        TextView tvLastSold = (TextView) findViewById(R.id.tvLastSold);
-        tvLastSold.setText(id.getLastSold().toString());
+        if (id != null) {
 
-        TextView tvDescription = (TextView) findViewById(R.id.tvDescription);
-        tvDescription.setText(id.getDescription());
+            TextView tvLastSold = (TextView) findViewById(R.id.tvLastSold);
+            tvLastSold.setText(id.getLastSold().toString());
 
-        EditText etExtendedDescription = (EditText) findViewById(R.id.etExtendedDescription);
-        etExtendedDescription.setText(id.getExtendedDescription());
+            TextView tvDescription = (TextView) findViewById(R.id.tvDescription);
+            tvDescription.setText(id.getDescription());
 
-        TextView tvSubDescription1 = (TextView) findViewById(R.id.tvSubDescription1);
-        tvSubDescription1.setText(id.getSubDescription1());
+            EditText etExtendedDescription = (EditText) findViewById(R.id.etExtendedDescription);
+            etExtendedDescription.setText(id.getExtendedDescription());
 
-        TextView tvSubDescription2 = (TextView) findViewById(R.id.tvSubDescription2);
-        tvSubDescription2.setText(id.getSubDescription2());
+            TextView tvSubDescription1 = (TextView) findViewById(R.id.tvSubDescription1);
+            tvSubDescription1.setText(id.getSubDescription1());
 
-        TextView tvSubDescription3 = (TextView) findViewById(R.id.tvSubDescription3);
-        tvSubDescription3.setText(id.getSubDescription3());
+            TextView tvSubDescription2 = (TextView) findViewById(R.id.tvSubDescription2);
+            tvSubDescription2.setText(id.getSubDescription2());
 
-        TextView tvRetailPrice = (TextView) findViewById(R.id.tvRetailPrice);
-        tvRetailPrice.setText(String.format(Locale.US, "%1$.2f", id.getPrice()));
+            TextView tvSubDescription3 = (TextView) findViewById(R.id.tvSubDescription3);
+            tvSubDescription3.setText(id.getSubDescription3());
 
-        TextView tvSalePrice = (TextView) findViewById(R.id.tvSalePrice);
-        tvSalePrice.setText(String.format(Locale.US, "%1$.2f", id.getSalePrice()));
+            TextView tvRetailPrice = (TextView) findViewById(R.id.tvRetailPrice);
+            tvRetailPrice.setText(String.format(Locale.US, "%1$.2f", id.getPrice()));
 
-        TextView tvCost = (TextView) findViewById(R.id.tvCost);
-        tvCost.setText(String.format(Locale.US, "%1$.2f",id.getCost()));
+            TextView tvSalePrice = (TextView) findViewById(R.id.tvSalePrice);
+            tvSalePrice.setText(String.format(Locale.US, "%1$.2f", id.getSalePrice()));
+
+            TextView tvCost = (TextView) findViewById(R.id.tvCost);
+            tvCost.setText(String.format(Locale.US, "%1$.2f", id.getCost()));
+        } else {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    context);
+
+            // set title
+            alertDialogBuilder.setTitle("RMSHelper Warning");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Item Not Found!")
+                    .setCancelable(false)
+                    .setNegativeButton("OK",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            dialog.cancel();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        }
+
+        // Highlight and focus ilc textview
+        EditText etUPC = (EditText) findViewById(R.id.etUPC);
+        etUPC.requestFocus();
+        etUPC.selectAll();
 
     }
+
 }

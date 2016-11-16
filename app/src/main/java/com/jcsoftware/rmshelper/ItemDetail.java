@@ -1,6 +1,6 @@
 package com.jcsoftware.rmshelper;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -145,7 +145,12 @@ class ItemDetail {
     }
 
     Date getLastSold(){
-        return this.lastsold;
+        if (lastsold != null) {
+            return this.lastsold;
+        } else {
+            return Date.valueOf("1900-01-01");
+        }
+
     }
 
     public String getDept(){
@@ -153,11 +158,19 @@ class ItemDetail {
     }
 
     public Date getSaleStart(){
-        return this.salestart;
+        if (salestart != null) {
+            return this.salestart;
+        } else {
+            return Date.valueOf("1900-01-01");
+        }
     }
 
     public Date getSaleEnd(){
-        return this.saleend;
+        if (saleend != null) {
+            return this.saleend;
+        } else {
+            return Date.valueOf("1900-01-01");
+        }
     }
 
     public Boolean getInactive(){

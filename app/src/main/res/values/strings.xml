@@ -24,6 +24,6 @@
     <string name="sn_Copy">C</string>
     <string name="sn_Print">P</string>
     <string name="sn_PO">PO</string>
-    <string name="sn_Select">SELECT</string>
+    <string name="sn_Select">SEL</string>
     <string name="sn_Exit">EXIT</string>
 </resources>

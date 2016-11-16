@@ -1,5 +1,7 @@
 package com.jcsoftware.rmshelper;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -32,7 +34,8 @@ class ItemDetailAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
         ItemDetail itemdetail = new ItemDetail();
 
         Log.i("Android"," MySQL Connect Example.");
-        Connection conn;
+        Connection conn = null;
+        Statement stmt = null;
         try {
             String driver = "net.sourceforge.jtds.jdbc.Driver";
             Class.forName(driver).newInstance();
@@ -41,7 +44,7 @@ class ItemDetailAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
             String password = logindata.getPwd();
             conn = DriverManager.getConnection(connString,username,password);
             Log.w("Connection","open");
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             ResultSet reset = stmt.executeQuery("select " +
                     "itemlookupcode, " +
                     "description, " +
@@ -83,17 +86,35 @@ class ItemDetailAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
 
             }
 
+            // close stmt
+            stmt.close();
             // close connection
             conn.close();
+            return itemdetail;
 
         } catch (ClassNotFoundException | SQLException | java.lang.InstantiationException | IllegalAccessException e) {
             Log.e("EXCEPTION", Log.getStackTraceString(e));
-        }  finally {
-            Log.i("Android"," MySQL Connect Example. Finally");
+            return null;
+        } finally {
+            Log.i("Android","Close Conn ");
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                Log.e("EXCEPTION", Log.getStackTraceString(e));
+            }
+
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Exception e) {
+                Log.e("EXCEPTION", Log.getStackTraceString(e));
+            }
+            publishProgress();
         }
 
-        publishProgress();
-        return itemdetail;
     }
 
 
@@ -122,9 +143,12 @@ class ItemDetailAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
 
     @Override
     protected void onPostExecute(ItemDetail result) {
-
-        parent.ReturnItemDetailSet(result);
         super.onPostExecute(result);
+        if (result.getItemLookupCode() == null) {
+            parent.ReturnItemDetailSet(null);
+        } else {
+            parent.ReturnItemDetailSet(result);
+        }
         dismissProgressBar();
     }
 
@@ -133,5 +157,4 @@ class ItemDetailAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
         // TODO Auto-generated method stub
 
     }
-
 }
