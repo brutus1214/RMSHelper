@@ -15,14 +15,14 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tvUPC_"
+            android:id="@+id/tvILC_"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="@string/sn_UPC" />
+            android:text="@string/sn_ILC" />
 
         <EditText
-            android:id="@+id/etUPC"
+            android:id="@+id/etILC"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="12sp"
@@ -30,7 +30,7 @@
             android:background="@drawable/edittextstyle"
             android:digits="0123456789"
             android:ellipsize="start"
-            android:hint="@string/sn_EnterUPC"
+            android:hint="@string/sn_EnterILC"
             android:inputType="number"
             android:selectAllOnFocus="true"
             android:enabled="true"

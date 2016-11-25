@@ -33,7 +33,7 @@ class ItemDetailAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
 
         ItemDetail itemdetail = new ItemDetail();
 
-        Log.i("Android"," MySQL Connect Example.");
+        Log.i("Android"," ItemDetailAsyncTask. Start");
         Connection conn = null;
         Statement stmt = null;
         try {
@@ -43,7 +43,6 @@ class ItemDetailAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
             String username = logindata.getName();
             String password = logindata.getPwd();
             conn = DriverManager.getConnection(connString,username,password);
-            Log.w("Connection","open");
             stmt = conn.createStatement();
             ResultSet reset = stmt.executeQuery("select " +
                     "itemlookupcode, " +
@@ -67,8 +66,6 @@ class ItemDetailAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
             );
             //Print the data to the console
             while(reset.next()){
-                String temp = reset.getString("itemlookupcode") + "  " + reset.getString("description") + "  " + reset.getString("price") + "  " + reset.getString("cost");
-                Log.w("Data:", temp);
                 itemdetail.setItemLookupCode(reset.getString("itemlookupcode"));
                 itemdetail.setDescription(reset.getString("description"));
                 itemdetail.setSubDescription1(reset.getString("subdescription1"));
@@ -96,7 +93,7 @@ class ItemDetailAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
             Log.e("EXCEPTION", Log.getStackTraceString(e));
             return null;
         } finally {
-            Log.i("Android","Close Conn ");
+            Log.i("Android"," ItemDetailAsyncTask. End ");
             try {
                 if (conn != null) {
                     conn.close();

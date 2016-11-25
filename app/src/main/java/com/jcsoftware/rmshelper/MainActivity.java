@@ -4,13 +4,9 @@ package com.jcsoftware.rmshelper;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,27 +27,36 @@ public class MainActivity extends AppCompatActivity {
         return itemdetail;
     }
 
+    private boolean IsILCPresent () {
+        EditText etILC= (EditText) findViewById(R.id.etILC);
+        if (etILC.length() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EditText etUPC= (EditText) findViewById(R.id.etUPC);
-        etUPC.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        EditText etILC= (EditText) findViewById(R.id.etILC);
+        etILC.setOnFocusChangeListener(new View.OnFocusChangeListener()
                                        {
                                            @Override
                                            public void onFocusChange(View v, boolean hasFocus)
                                            {
                                                if(hasFocus)
                                                {
-                                                   EditText etUPC= (EditText) findViewById(R.id.etUPC);
-                                                   etUPC.setSelectAllOnFocus(true);
+                                                   EditText etILC= (EditText) findViewById(R.id.etILC);
+                                                   etILC.setSelectAllOnFocus(true);
                                                }
                                            }
                                        }
         );
-        etUPC.setFocusable(true);
-        etUPC.requestFocus();
+        etILC.setFocusable(true);
+        etILC.requestFocus();
 
 
         Button bPrint = (Button) findViewById(R.id.bPrint);
@@ -61,11 +66,36 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                EditText etUPC = (EditText) findViewById(R.id.etUPC);
+                EditText etUPC = (EditText) findViewById(R.id.etILC);
 
-                String upc = etUPC.getText().toString();
-                ItemPrintAsyncTask at = new ItemPrintAsyncTask(MainActivity.this, upc, ld);
-                at.execute(upc);
+                if (IsILCPresent()) {
+                    String upc = etUPC.getText().toString();
+                    ItemPrintAsyncTask at = new ItemPrintAsyncTask(MainActivity.this, upc, ld);
+                    at.execute(upc);
+                } else {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+                    // set title
+                    alertDialogBuilder.setTitle("RMSHelper Warning");
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setMessage("Please enter or scan Item Lookup Code!")
+                            .setCancelable(false)
+                            .setNegativeButton("OK",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // if this button is clicked, just close
+                                    // the dialog box and do nothing
+                                    dialog.cancel();
+                                }
+                            });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+                }
             }
 
         });
@@ -77,15 +107,51 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                EditText etUPC = (EditText) findViewById(R.id.etUPC);
+                EditText etUPC = (EditText) findViewById(R.id.etILC);
 
-                String upc = etUPC.getText().toString();
-                ItemDetailAsyncTask at = new ItemDetailAsyncTask(MainActivity.this, upc, ld);
-                at.execute(upc);
+                if (IsILCPresent()) {
+                    String upc = etUPC.getText().toString();
+                    ItemDetailAsyncTask at = new ItemDetailAsyncTask(MainActivity.this, upc, ld);
+                    at.execute(upc);
+                } else {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+                    // set title
+                    alertDialogBuilder.setTitle("RMSHelper Warning");
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setMessage("Please enter or scan Item Lookup Code!")
+                            .setCancelable(false)
+                            .setNegativeButton("OK",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // if this button is clicked, just close
+                                    // the dialog box and do nothing
+                                    dialog.cancel();
+                                }
+                            });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+                }
+            }
+
+        });
+
+        Button bPO = (Button) findViewById(R.id.bPO);
+
+        bPO.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
 
             }
 
         });
+
 
         Button bExit = (Button) findViewById(R.id.bExit);
 
@@ -133,8 +199,7 @@ public class MainActivity extends AppCompatActivity {
             TextView tvCost = (TextView) findViewById(R.id.tvCost);
             tvCost.setText(String.format(Locale.US, "%1$.2f", id.getCost()));
         } else {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                    context);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
             // set title
             alertDialogBuilder.setTitle("RMSHelper Warning");
@@ -159,10 +224,59 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Highlight and focus ilc textview
-        EditText etUPC = (EditText) findViewById(R.id.etUPC);
+        EditText etUPC = (EditText) findViewById(R.id.etILC);
         etUPC.requestFocus();
         etUPC.selectAll();
 
     }
 
+    public void PrintConfirmation(Integer numRows) {
+        if (numRows != 1) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+            // set title
+            alertDialogBuilder.setTitle("RMSHelper Warning");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Item Print Failed!")
+                    .setCancelable(false)
+                    .setNegativeButton("OK",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            dialog.cancel();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        } else {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+            // set title
+            alertDialogBuilder.setTitle("RMSHelper Confirmation");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Item sent to print queue!")
+                    .setCancelable(false)
+                    .setNegativeButton("OK",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            dialog.cancel();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        }
+    }
 }

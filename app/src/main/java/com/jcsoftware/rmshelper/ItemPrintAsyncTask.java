@@ -14,7 +14,7 @@ import java.sql.Statement;
  * OK
  */
 
-class ItemPrintAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
+class ItemPrintAsyncTask extends AsyncTask<String, Integer, Integer> {
     private MainActivity parent;
     private String upc;
     private LoginData logindata;
@@ -26,12 +26,14 @@ class ItemPrintAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
     }
 
     @Override
-    protected ItemDetail doInBackground(String... params) {
+    protected Integer doInBackground(String... params) {
+
 
         ItemDetail itemdetail = new ItemDetail();
 
-        Log.i("Android"," MySQL Connect Example.");
-        Connection conn;
+        Log.i("Android"," ItemPrintAsyncTask. Start");
+        Connection conn = null;
+        Statement stmt = null;
         try {
             String driver = "net.sourceforge.jtds.jdbc.Driver";
             Class.forName(driver).newInstance();
@@ -40,59 +42,45 @@ class ItemPrintAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
             String password = logindata.getPwd();
             conn = DriverManager.getConnection(connString,username,password);
             Log.w("Connection","open");
-            Statement stmt = conn.createStatement();
-            ResultSet reset = stmt.executeQuery("select " +
-                    "itemlookupcode, " +
-                    "description, " +
-                    "subdescription1, " +
-                    "subdescription2, " +
-                    "subdescription3, " +
-                    "extendeddescription, " +
-                    "price, " +
-                    "saleprice, " +
-                    "cost, " +
-                    "lastsold, " +
-                    //"deptid, " +
-                    //"salestart, " +
-                    //"saleend, " +
-                    "inactive " +
-                    "from item " +
+            stmt = conn.createStatement();
+            Integer numRows = stmt.executeUpdate("update " +
+                    "item set consignment = 1 " +
                     "where " +
                     "itemlookupcode = '" +params[0] +
                     "'"
             );
-            //Print the data to the console
-            while(reset.next()){
-                String temp = reset.getString("itemlookupcode") + "  " + reset.getString("description") + "  " + reset.getString("price") + "  " + reset.getString("cost");
-                Log.w("Data:", temp);
-                itemdetail.setItemLookupCode(reset.getString("itemlookupcode"));
-                itemdetail.setDescription(reset.getString("description"));
-                itemdetail.setSubDescription1(reset.getString("subdescription1"));
-                itemdetail.setSubDescription2(reset.getString("subdescription2"));
-                itemdetail.setSubDescription3(reset.getString("subdescription3"));
-                itemdetail.setExtendedDescription(reset.getString("extendeddescription"));
-                itemdetail.setPrice(reset.getInt("price"));
-                itemdetail.setSalePrice(reset.getInt("saleprice"));
-                itemdetail.setCost(reset.getInt("cost"));
-                itemdetail.setLastSold(reset.getDate("lastsold"));
-                //itemdetail.setDept(reset.getString("dept"));
-                //itemdetail.setSaleStart(reset.getDate("salestart"));
-                //itemdetail.setSaleEnd(reset.getDate("saleend"));
-                itemdetail.setInactive(reset.getBoolean("inactive"));
 
-            }
-
+            // close stmt
+            stmt.close();
             // close connection
             conn.close();
-
+            if (numRows != 1) {
+                return 0;
+            } else {
+                return 1;
+            }
         } catch (ClassNotFoundException | SQLException | java.lang.InstantiationException | IllegalAccessException e) {
             Log.e("EXCEPTION", Log.getStackTraceString(e));
+            return null;
         }  finally {
-            Log.i("Android"," MySQL Connect Example. Finally");
+            Log.i("Android"," ItemPrintAsyncTask. End ");
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                Log.e("EXCEPTION", Log.getStackTraceString(e));
+            }
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (Exception e) {
+                Log.e("EXCEPTION", Log.getStackTraceString(e));
+            }
+            publishProgress();
         }
 
-        publishProgress();
-        return itemdetail;
     }
 
 
@@ -120,10 +108,13 @@ class ItemPrintAsyncTask extends AsyncTask<String, Integer, ItemDetail> {
 
 
     @Override
-    protected void onPostExecute(ItemDetail result) {
-
-        parent.ReturnItemDetailSet(result);
-        super.onPostExecute(result);
+    protected void onPostExecute(Integer numRows) {
+        super.onPostExecute(numRows);
+        if (numRows != 1) {
+            parent.PrintConfirmation(0);
+        } else {
+            parent.PrintConfirmation(1);
+        }
         dismissProgressBar();
     }
 
