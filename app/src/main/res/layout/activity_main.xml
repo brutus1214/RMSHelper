@@ -52,8 +52,8 @@
             android:background="@drawable/edittextstyle"
             android:ellipsize="start"
             android:enabled="false" />
-
     </LinearLayout>
+
 
     <TextView
         android:id="@+id/tvDescription_"

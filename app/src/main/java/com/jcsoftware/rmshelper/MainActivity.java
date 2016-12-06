@@ -4,6 +4,7 @@ package com.jcsoftware.rmshelper;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     final Context context = this;
     ItemDetail itemdetail;
     LoginData ld = new LoginData();
+    PO po = new PO();
 
     public void setItemDetail (ItemDetail id) {
         itemdetail = id;
@@ -147,7 +149,38 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                if (po.getIsSelected()) {
+                    // Add current item to PO
+              } else {
+                    if (IsILCPresent()) {
+                        Intent intent = new Intent(v.getContext(), POSelectorActivity.class);
+                        startActivity(intent);
+                    } else {
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
+                        // set title
+                        alertDialogBuilder.setTitle("RMSHelper Warning");
+
+                        // set dialog message
+                        alertDialogBuilder
+                                .setMessage("Please enter or scan Item Lookup Code!")
+                                .setCancelable(false)
+                                .setNegativeButton("OK",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // if this button is clicked, just close
+                                        // the dialog box and do nothing
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        // create alert dialog
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+
+                        // show it
+                        alertDialog.show();
+                    }
+
+                }
             }
 
         });

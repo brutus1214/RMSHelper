@@ -26,4 +26,8 @@
     <string name="sn_PO">PO</string>
     <string name="sn_Select">SEL</string>
     <string name="sn_Exit">EXIT</string>
+    <string name="sn_Cancel">CANCEL</string>
+    <string name="sn_SelectStartDate">Start Date : </string>
+    <string name="sn_SelectEndDate">End Date : </string>
+
 </resources>
